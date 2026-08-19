@@ -49,7 +49,7 @@ Data dictionary file: `Data/Olist Data Dictionary.md`
 ---
 
 ## 5. Database schema / tables
-The SQL scripts create/operate on the following tables (target tables shown; source staging tables are named with a `1` suffix in the repository scripts, e.g., `Orders1`):
+The SQL scripts use and operate on the following target tables. Some source CSVs were imported directly into the target tables, while others required staging tables (using a `1` suffix) for type conversion before being loaded into the final tables.
 
 - Customers
   - customer_id, customer_unique_id, customer_zip_code_prefix, customer_city, customer_state
@@ -70,7 +70,7 @@ The SQL scripts create/operate on the following tables (target tables shown; sou
 - Category_Translation
   - product_category_name, product_category_name_english
 
-Note: staging/source tables used by the ETL script are referenced as Orders1, Order_Items1, Sellers1, Reviews1, Payments1, Geolocation1, etc. The repository scripts assume those staging tables (or equivalent CSV imports) are available.
+Note: Some source CSVs were imported directly into the target tables, while others were first imported into staging tables such as Orders1, Order_Items1, Sellers1, Reviews1, Payments1, and Geolocation1 for type conversion before being loaded into the target tables.
 
 The primary key constraints are set in the schema script (see Olist.sql), e.g., PKs created for Orders, Customers, Products, Sellers, Payments, Order_Items, Reviews, and Category_Translation.
 
@@ -188,7 +188,7 @@ These questions are implemented as queries across the exploratory and business a
 - Average revenue per customer: **R$165.68**
 - One-time customers: **92,636 (96.94%)**
 - Repeat customers: **2,924 (3.06%)**
-- The highest-spending customer generated **R$13,664.08** across one order.
+- The highest-spending customer in the analysis generated **R$13,664.08** from one order.
 
 ### Products and categories
 - Top category by revenue: **health_beauty — R$1,255,695.13**
@@ -218,15 +218,12 @@ These questions are implemented as queries across the exploratory and business a
 ---
 
 ## 12. Business insights
-The repository contains analyses that enable the following types of insight; actual statements require execution of the SQL to convert query outputs into conclusions. All items below are supported by queries in the repository; the specific insights are left to results after running the queries.
 
-- Where the business derives most revenue (categories, states, months) — computed via revenue-by-category and revenue-by-geography queries.
-- Customer value segmentation (top customers, avg revenue per customer, repeat customer share) — computed via customer-level aggregations.
-- Seller performance and product assortment signals (seller revenue, unique products per seller, seller review averages).
-- Delivery performance and its relationship to customer satisfaction (avg delivery times, on-time % and review score by delivery speed).
-- Payment method contribution and potential correlations with review scores.
-
-All of the above depend on running the SQL and interpreting the numeric outputs.
+- Revenue is concentrated in a relatively small number of product categories, with health_beauty generating the highest category revenue in the analysis.
+- Customer retention is a notable area for improvement, with 96.94% of customers classified as one-time customers and only 3.06% as repeat customers.
+- Delivery performance is generally strong, with an on-time delivery rate of 91.89%.
+- Faster delivery is associated with higher average review scores: orders delivered within 7 days averaged 4.41, compared with 3.06 for deliveries taking 22+ days.
+- The majority of reviews are positive, with 57.78% receiving a 5-star rating.
 
 ---
 
@@ -239,7 +236,7 @@ Based on the analyses implemented in the repository, typical next steps an analy
 - Examine categories with high freight or long delivery times (queries already present) and consider logistics optimization for those categories.
 - Cross-check payment type vs review score outputs and investigate whether payment-related processes affect satisfaction.
 
-Note: the repository provides the queries to compute the above; concrete recommendations should be tailored to numeric outputs after running the scripts. Replace [RESULT NEEDED] with actual numbers to finalize recommendations.
+Note: the repository provides the queries to compute the above; concrete recommendations should be tailored to numeric outputs after running the scripts. 
 
 ---
 
@@ -251,7 +248,7 @@ The repository and the scripts include these limitations and assumptions (explic
 - TRY_CAST is used to avoid load failures; invalid values become NULL. This preserves load but requires careful examination of NULLs after casting (the repository includes QA queries for this purpose).
 - Geolocation joins can multiply rows because the geolocation table uses zip-code prefixes that are not unique. The data dictionary warns join behavior must be handled carefully to avoid inflated aggregates.
 - Payments, Order_Items and Reviews can have multiple rows per order; naive joins can double-count revenue or other order-level metrics if aggregation is not applied correctly. The repository queries are generally aware of this.
-- The repository contains SQL queries and checks but does not persist or visualize numeric results — execution against the dataset is needed to obtain numbers.
+- The repository does not persist or visualize query-result datasets; key numeric findings are summarized in this README.
 - No automated remediation beyond casting and simple header deletion is implemented; most QA checks return result sets for manual inspection.
 
 ---
@@ -260,7 +257,7 @@ The repository and the scripts include these limitations and assumptions (explic
 Top-level files and folders (as present in the repository):
 
 - SQL/
-  - Olist.sql — schema creation, type casting, insert-from-staging, simple cleaning and PK creation
+  - Olist.sql — target table setup, type casting, insert-from-staging, simple cleaning and PK creation
     - Link: `SQL/Olist.sql`
   - Data_Quality_Assessment.sql — comprehensive data-quality checks and validation queries
     - Link: `SQL/Data_Quality_Assessment.sql`
@@ -273,7 +270,6 @@ Top-level files and folders (as present in the repository):
   - Olist Data Dictionary.md — detailed descriptions of CSV source files, columns, and relationships
     - Link: `Data/Olist Data Dictionary.md`
 
-- README.md.txt — empty/unused (repository README placeholder)
 
 ---
 
@@ -289,6 +285,5 @@ Top-level files and folders (as present in the repository):
 
 ## Contact / notes
 - The repository provides the SQL queries and data dictionary needed to prepare and analyze the Olist dataset. Numeric outputs and dashboards are not included; run the provided scripts against the dataset to produce results.
-- All conclusions that require numeric outputs are left as [RESULT NEEDED] and should be replaced after script execution.
 
 ---
