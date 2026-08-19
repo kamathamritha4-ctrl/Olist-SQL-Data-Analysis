@@ -371,18 +371,11 @@ GROUP BY s.seller_state
 ORDER BY Avg_Freight DESC;
 
 SELECT
-    oi.seller_id,
-    AVG(oi.price) AS Avg_Order_Value
-FROM Order_Items oi
-GROUP BY oi.seller_id
-ORDER BY Avg_Order_Value DESC;
-
-SELECT
     seller_id,
-    AVG(price) AS Avg_Order_Value
+    AVG(price) AS Avg_Item_Price
 FROM Order_Items 
 GROUP BY seller_id
-ORDER BY Avg_Order_Value DESC;
+ORDER BY Avg_Item_Price DESC;
 
 SELECT
     AVG(
