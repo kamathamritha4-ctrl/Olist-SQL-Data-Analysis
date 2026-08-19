@@ -36,11 +36,6 @@ End As Customer_Segment
 From CustomerRevenue
 Order By Revenue DESC
 
----SELECT
-  ---  Customer_Segment,
-  ---  COUNT(*) AS Customers
----FROM CustomerRevenue
----GROUP BY Customer_Segment;
 
 SELECT TOP 20
 c.customer_unique_id,
@@ -146,39 +141,12 @@ Select * From SellerRanking
 Where Seller_Rank<=5
 Order By Seller_State,Seller_Rank
 
-Select oi.seller_id,
-SUM(oi.price) As Revenue,
-Round(Avg(r.review_score),2) As Avg_Review_Score,
-COUNT(DISTINCT oi.order_id) AS Total_Orders
-From Order_Items oi
-Join Orders o
-On oi.order_id=o.order_id
-Join Reviews r
-On o.order_id=r.order_id
-Group By oi.seller_id
-Order By Revenue DESC
-
-
 Select
 Avg(
 DATEDIFF(DAY,order_purchase_timestamp,order_delivered_customer_date)
 ) As Avg_Delivery_Date
 From Orders
 Where order_delivered_customer_date Is Not Null
-
-Select
-s.seller_state,
-Avg(
-DATEDIFF(DAY,o.order_purchase_timestamp,o.order_delivered_customer_date)
-) As Avg_Delivery_Days
-From Orders o
-Join Order_Items oi
-On o.order_id=oi.order_id
-Join Sellers s
-On s.seller_id=oi.seller_id
-Where o.order_delivered_customer_date Is Not Null
-Group By s.seller_state
-Order By Avg_Delivery_Days;
 
 
 
@@ -201,7 +169,6 @@ SELECT
 FROM DeliveryStatus
 GROUP BY Delivery_Status;
 
-Select * from Orders;
 
 
 With DeliveryStatus As(
@@ -223,7 +190,6 @@ Group By ds.Delivery_Status
 Order By Review_Score;
 
 
-Select * from Orders;
 
 With MonthlyRevenue As
 (Select Year(o.order_purchase_timestamp) As Year,
