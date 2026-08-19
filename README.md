@@ -176,22 +176,44 @@ Files:
 These questions are implemented as queries across the exploratory and business analysis scripts.
 
 ---
-
 ## 11. Key findings
-The repository contains the SQL queries that compute these findings but does not include persisted numeric results. For each item below, the SQL to compute it exists; the actual numeric output must be obtained by running the scripts against the dataset and will replace the [RESULT NEEDED] placeholders.
 
-- Total revenue (sum of item prices): [RESULT NEEDED]
-- Total freight revenue: [RESULT NEEDED]
-- Gross revenue (price + freight): [RESULT NEEDED]
-- Average order value: [RESULT NEEDED]
-- Revenue by year / month (time series): [RESULT NEEDED]
-- Top product categories by revenue and units sold: [RESULT NEEDED]
-- Avg revenue per customer and top customers by spend: [RESULT NEEDED]
-- Count of repeat vs one-time customers: [RESULT NEEDED]
-- Seller revenue leaderboard and average revenue per seller: [RESULT NEEDED]
-- Average delivery days and on-time delivery percentage: [RESULT NEEDED]
-- Distribution of review scores and averages by delivery speed / payment type: [RESULT NEEDED]
-- Data quality issues discovered (duplicates, missing dates, negative prices, orphan records): [RESULT NEEDED] — the repository contains the exact checks to report these.
+### Revenue
+- Total item revenue: **R$13,496,408.43**
+- Total freight revenue: **R$2,241,259.09**
+- Gross revenue (item price + freight): **R$15,737,667.52**
+- Average order value: **R$160.25**
+
+### Customers
+- Average revenue per customer: **R$165.68**
+- One-time customers: **92,636 (96.94%)**
+- Repeat customers: **2,924 (3.06%)**
+- The highest-spending customer generated **R$13,664.08** across one order.
+
+### Products and categories
+- Top category by revenue: **health_beauty — R$1,255,695.13**
+- Top category by units sold: **bed_bath_table — 11,097 units**
+- Other high-revenue categories include watches_gifts, bed_bath_table, sports_leisure, and computers_accessories.
+
+### Delivery and customer satisfaction
+- Average delivery time: **12.5 days**
+- On-time delivery rate: **91.89%**
+- 5-star reviews represented **57.78%** of all reviews.
+- Average review score decreased as delivery time increased:
+  - 0–7 days: **4.41**
+  - 8–14 days: **4.30**
+  - 15–21 days: **4.12**
+  - 22+ days: **3.06**
+
+### Data quality
+- No duplicate primary-key values were identified in Customers, Orders, Products, or Sellers.
+- No negative prices or freight values were identified.
+- No orphan order-item, payment, or review records were identified.
+- Missing operational dates were identified in Orders:
+  - Approval date: **160**
+  - Carrier date: **1,783**
+  - Customer delivery date: **2,965**
+  - Estimated delivery date: **0**
 
 ---
 
