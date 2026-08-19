@@ -540,8 +540,12 @@ ORDER BY Avg_Review_Score DESC;
 SELECT
     p.payment_type,
     ROUND(AVG(r.review_score * 1.0), 2) AS Avg_Review_Score
-FROM Reviews r
-JOIN Payments p
+FROM
+(
+    SELECT DISTINCT order_id, payment_type
+    FROM Payments
+) p
+JOIN Reviews r
     ON r.order_id = p.order_id
 GROUP BY p.payment_type
 ORDER BY Avg_Review_Score DESC;
